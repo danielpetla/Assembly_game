@@ -9,7 +9,6 @@ map:
 
 score:		.asciiz "Score: "
 game_over:	.asciiz "Game Over\n"
-game_won:	.asciiz "Game Won\n"
 new_line:	.asciiz "\n"
 clear_screen:	.asciiz "\033[3J\033[H\033[2J"
 
@@ -53,10 +52,10 @@ main:
 game_loop:
 	jal movement
 	
-	# Sleep for a short duration so the player doesn't instantly hit a wall
-    li $v0, 32
-    li $a0, 150         # 150 milliseconds delay (adjust for speed)
-    syscall
+	li $t0, 200000		# cpu dead cycles
+busy_wait:
+	addi $t0, $t0, -1
+	bgtz $t0, busy_wait
     
 	j game_loop        # -> keeps the program running
     
